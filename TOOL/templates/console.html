@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Console</title>
+
+    <script src="{{ url_for('static', filename='js/jquery-3.6.1.js') }}"></script>
+
+    <!-- CodeMirror -->
+    <script src="{{ url_for('static', filename='js/codemirror.js') }}"></script>
+
+    <link href="{{ url_for('static', filename='css/codemirror.css') }}" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='js/addon/display/fullscreen.css') }}" rel="stylesheet">
+
+    <!-- theam -->
+    <link href="{{ url_for('static', filename='css/theam/tomorrow-night-bright.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/theam/pastel-on-dark.css') }}" rel="stylesheet">
+
+    <!-- scrollbars -->
+    <script src="{{ url_for('static', filename='js/addon/scroll/simplescrollbars.js') }}"></script>
+    <link href="{{ url_for('static', filename='js/addon/scroll/simplescrollbars.css') }}" rel="stylesheet">
+
+
+
+    <link href="{{ url_for('static', filename='js/addon/dialog/dialog.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='js/addon/search/matchesonscrollbar.css') }}" rel="stylesheet">
+
+    <!-- BOOTSTRAP -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+    <!-- MyScripts -->
+    <script src="{{ url_for('static', filename='js/console.js') }}"></script>
+    <link href="{{ url_for('static', filename='css/editor.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/console.css') }}" rel="stylesheet">
+</head>
+<body>
+
+
+<form id="main-form">
+    <textarea class="console-panel" id="console-panel" name="console-panel"></textarea>
+</form>
+
+
+<div class="control-panel">
+    <button type="button" class="btn btn-danger btn-stop" onclick="StopScript()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause-circle-fill" viewBox="0 0 16 16">
+          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.25 5C5.56 5 5 5.56 5 6.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C7.5 5.56 6.94 5 6.25 5zm3.5 0c-.69 0-1.25.56-1.25 1.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C11 5.56 10.44 5 9.75 5z"/>
+        </svg>
+        stop
+    </button>
+</div>
+
+
+
+</body>
+</html>

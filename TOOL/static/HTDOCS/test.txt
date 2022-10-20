@@ -1,0 +1,12 @@
+def editor(args):
+    pathFile = args.get('path')
+    nameFile = args.get('name')
+
+    fullPath = f'{path}{pathFile}/{nameFile}'
+
+    f = open(fullPath, "r", encoding='utf-8')
+    data = f.read()
+    f.close()
+
+    #return data
+    return render_template('editor.html', data=data)

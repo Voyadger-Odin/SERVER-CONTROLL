@@ -1,0 +1,42 @@
+script 1
+script 1
+script 1
+<class 'Exception'>
+script 1
+<class 'Exception'>
+script 1
+Ошибка:
+ Traceback (most recent call last):
+  File "D:\Projects\Sites\Dividends\SCRIPTS-TOOL\TOOL\HTDOCS\starter.py", line 19, in startScript
+    exec(open(f'{path}\\test.py').read())
+  File "<string>", line 4, in <module>
+ZeroDivisionError: division by zero
+
+print('Hello world')
+
+
+def test():
+  a = 12
+  
+  b = 'asfas'
+print('Hello world')
+
+
+def test():
+  a = 12
+  
+  b = 'asfas'
+print('Hello world')
+
+
+def test():
+  a = 12
+  
+  b = 'asfas'
+print('Hello world')
+
+
+def test():
+  a = 12
+  
+  b = 'asfas'

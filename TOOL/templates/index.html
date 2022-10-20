@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+
+
+{% block head %}
+
+<script src="{{ url_for('static', filename='js/context-menu.js') }}"></script>
+<script src="{{ url_for('static', filename='js/index-scaner.js') }}"></script>
+<link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet">
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="block">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+              {% for f in pathview %}
+                <li class="breadcrumb-item"><a href="index.html?path={{ f['path'] }}">{{ f['name'] }}</a></li>
+              {% endfor %}
+            <li class="breadcrumb-item active" aria-current="page">{{ dirnow }}</li>
+          </ol>
+        </nav>
+    </div>
+
+    <div style="margin: 10px">
+        {% for f in dirs %}
+        <div class="file-item" ondblclick="folderClick('{{ f }}')" oncontextmenu="fileContextMenu(this, 'folder')">
+            <center>
+                <div class="file-item-img-box">
+                    <img src="{{ url_for('static', filename='img/folder.png') }}">
+                </div>
+                <div class="filename">{{f}}</div>
+            </center>
+        </div>
+        {% endfor %}
+
+
+        {% for f in files %}
+        <div class="file-item" ondblclick="contextMenuOBJ=this; openFile()" oncontextmenu="fileContextMenu(this, 'file')">
+            <center>
+                <div class="file-item-img-box">
+                    <!-- ТЕКСТ -->
+                    {% if f['type'] == 'txt' %}
+                    <img src="{{ url_for('static', filename='img/file-txt.png') }}">
+                    {% elif f['type'] == 'py' %}
+                    <img src="{{ url_for('static', filename='img/file-py.png') }}">
+                    {% elif f['type'] == 'html' %}
+                    <img src="{{ url_for('static', filename='img/file-html.png') }}">
+                    {% elif f['type'] == 'js' %}
+                    <img src="{{ url_for('static', filename='img/file-js.png') }}">
+                    {% elif f['type'] == 'css' %}
+                    <img src="{{ url_for('static', filename='img/file-css.png') }}">
+
+                    <!-- КАРТИНКИ -->
+                    {% elif f['type'] == 'jpg' %}
+                    <!--<img src="{{ url_for('static', filename=f['file'] + '/' + f['name']) }}">-->
+                    <img src="{{ url_for('static', filename='img/file-jpg.png') }}">
+                    {% elif f['type'] == 'png' %}
+                    <img src="{{ url_for('static', filename='img/file-png.png') }}">
+                    {% elif f['type'] == 'svg' %}
+                    <img src="{{ url_for('static', filename='img/file-svg.png') }}">
+                    {% elif f['type'] == 'bmp' %}
+                    <img src="{{ url_for('static', filename='img/file-bmp.png') }}">
+
+                    <!-- АРХИВЫ -->
+                    {% elif f['type'] == 'zip' %}
+                    <img src="{{ url_for('static', filename='img/file-zip.png') }}">
+                    {% elif f['type'] == '7z' %}
+                    <img src="{{ url_for('static', filename='img/file-7z.png') }}">
+                    {% elif f['type'] == 'rar' %}
+                    <img src="{{ url_for('static', filename='img/file-rar.png') }}">
+                    {% elif f['type'] == 'tar' %}
+                    <img src="{{ url_for('static', filename='img/file-tar.png') }}">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='img/file.png') }}">
+                    {% endif %}
+                </div>
+                <div class="filename">{{ f['name'] }}</div>
+            </center>
+        </div>
+        {% endfor %}
+    </div>
+
+
+
+
+
+    <!-- Создание папки -->
+    <div class="modal fade" id="createFolder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Создание папки</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input id="create-folder-name" type="text" class="form-control" placeholder="Название папки" aria-label="Username">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-dark" onclick="createFolder()">Создать</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Создание файла -->
+    <div class="modal fade" id="createFile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Создание файла</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input id="create-file-name" type="text" class="form-control" placeholder="Название файла" aria-label="Username">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-dark" onclick="newFileEvent()">Создать</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Переиминовать файл -->
+    <div class="modal fade" id="renameFile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Переиминовать файл</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input id="rename-file-name" type="text" class="form-control" placeholder="Название папки" aria-label="Username">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-dark" onclick="renameFileEvent()">Переиминовать</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Переиминовать файл -->
+    <div class="modal fade" id="deleteFile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Удалить файл</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              Вы действительно хотите удалить файл <b id="delete-file-name"></b>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-danger" onclick="deleteFileEvent()">Удалить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Загрузить файлы -->
+    <div class="modal fade" id="loadFiles" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Загрузить файлы</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+                <input class="form-control" type="file" id="formFileMultiple" multiple>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-dark" onclick="loadFilesEvent()">Загрузить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Процессы -->
+    <div class="modal fade" id="processWindow" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Запущенные процессы</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="process-box">
+              Нет активных процессов
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+{% endblock %}
