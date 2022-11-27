@@ -15,7 +15,7 @@ def index(args, path):
     dirnow = ''
     if (getpath):
         doppath = args.get('path')
-        dirname = f'{path}\\{doppath}'
+        dirname = f'{path}/{doppath}'
         pathview_split = getpath.split('/')[:-1]
         for i in range(len(pathview_split)):
             path = ''
@@ -40,9 +40,9 @@ def index(args, path):
     files = []
 
     for file in fullpaths:
-        if os.path.isdir(file): dirs.append(file.split('\\')[-1])
+        if os.path.isdir(file): dirs.append(file.split('/')[-1])
         if os.path.isfile(file):
-            name = file.split('\\')[-1]
+            name = file.split('/')[-1]
             type = name.split('.')[-1]
             files.append({'name': name, 'type': type, 'file': getpath})
 

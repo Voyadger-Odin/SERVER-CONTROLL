@@ -3,6 +3,7 @@
 import sqlite3
 import json
 import datetime
+import os
 
 from TOOL import CONSTANTS
 
@@ -17,7 +18,9 @@ def TokenGenerator(data):
 def ensure_connection(func):
 	def inner(*args, **kwargs):
 		db_name = 'consoles.sqlite'
-		db_path = f'{CONSTANTS.path_TOOL}/DATABASE/{db_name}'
+		db_path = f'{CONSTANTS.path_TOOL}/TOOL/DATABASE/{db_name}'
+		print(os.path.abspath(os.getcwd()))
+		print(db_path)
 		with sqlite3.connect(db_path) as conn:
 			res = func(*args, conn = conn, **kwargs)
 		return res

@@ -1,4 +1,6 @@
+import os
 
 
-path_TOOL = 'D:\\Projects\\Sites\\Dividends\\SCRIPTS-TOOL\\TOOL'
-path = f'{path_TOOL}\\static\\HTDOCS'
+
+path_TOOL = os.path.abspath(os.getcwd())
+path = f'{path_TOOL}/TOOL/static/HTDOCS'
